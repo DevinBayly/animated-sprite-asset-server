@@ -62,6 +62,9 @@ func _on_gif_retrieval(result, response_code, headers, body):
 
 
 func _on_button_pressed() -> void:
+	var packfile = PCKPacker.new()
+	packfile.pck_start("all_anims.pck")
+	
 	print("making animated resource")
 	# currently not set up for multiple collections of pngs, perhaps this function would basically get called on each of folder of output images
 	# assumption here is that the pngs have already been created
@@ -79,9 +82,12 @@ func _on_button_pressed() -> void:
 		var texture = load("res://frames/"+ele)
 		sframes.add_frame("gifanimation",texture,1.0,i)
 		i+=1
-	
+		packfile.add_file("res://frames/"+ele,"res://frames/"+ele)
 	# lastly try to save the resource out 
 	var result = ResourceSaver.save(sframes,"res://animatedFrames.tres")
+	
 	if result != OK:
 		print("had a problem saving", result)
+	packfile.add_file("res://animatedFrames.tres","res://animatedFrames.tres")
+	packfile.flush()
 	pass # Replace with function body.

@@ -1,8 +1,12 @@
 [gd_scene format=3 uid="uid://cte0uh0n613qh"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_4xowi"]
+[ext_resource type="Script" uid="uid://b1ijirjvi0kfr" path="res://node_3d.gd" id="1_a202f"]
 
 [node name="Node3D" type="Node3D" unique_id=648657205]
+script = ExtResource("1_a202f")
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="." unique_id=1588058875]
-sprite_frames = SubResource("SpriteFrames_4xowi")
+animation = &"gifanimation"
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1815265076]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.5366042)
