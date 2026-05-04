@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://b34k8kmb4qky8"]
+
+[ext_resource type="Script" uid="uid://csxwwuxg2881a" path="res://node_2d.gd" id="1_0e48y"]
+[ext_resource type="Script" uid="uid://p2ruxwjdxjpf" path="res://responses.gd" id="1_wtcfe"]
+
+[node name="Node2D" type="Node2D" unique_id=1658810137]
+script = ExtResource("1_0e48y")
+
+[node name="responseGrabber" type="Button" parent="." unique_id=374397337]
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Retrieve form responses"
+script = ExtResource("1_wtcfe")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="." unique_id=1164723294]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1543452093]
+offset_top = 31.0
+offset_right = 40.0
+offset_bottom = 71.0
+
+[node name="Button" type="Button" parent="." unique_id=1408829712]
+offset_left = 1.0
+offset_top = 36.0
+offset_right = 204.0
+offset_bottom = 67.0
+text = "make Animated resource"
+
+[connection signal="pressed" from="responseGrabber" to="." method="_on_response_grabber_pressed"]
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
