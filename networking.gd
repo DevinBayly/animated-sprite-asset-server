@@ -134,8 +134,9 @@ func make_gifs_request(pname):
 	# NOTE perhaps do some sort of checking to see if the gif has been downloaded and converted already
 	for gifLink in gifs:
 		print("making gif request",gifLink)
-		http_requester.request(gifLink)
-	
+		print("doign a test version, UNCOMMENT LINE BELOW FOR REAL GIF RETRIEVAL")
+		#http_requester.request(gifLink)
+		offline_test_version()
 	
 var folders_to_pack=[]
 func _on_gif_retrieval(result, response_code, headers, body):
@@ -147,19 +148,36 @@ func _on_gif_retrieval(result, response_code, headers, body):
 	# then we need to do various things like converting the gif into png frames
 	# leaving this out for now since we are on a non linux ffmpeg machine
 	var output = []
+	OS.execute("mkdir",["-p","test"],output)
+	print("mkdir output was ",output)
+	output = []
 	OS.execute("ffmpeg",["-i","test.gif","test/frame%04d.png"],output)
 	print("output was ",output)
 	folders_to_pack.push_back("test")
 	# NOTE in the future we won't be able to get away with automatically running the packing and animation stuff here
 	pack_up()
+func offline_test_version():
+	# save the file to disk
+	# could try parsing the header to get the name of the gif
 	
+	# then we need to do various things like converting the gif into png frames
+	# leaving this out for now since we are on a non linux ffmpeg machine
+	var output = []
+	OS.execute("mkdir",["-p","test"],output)
+	print("mkdir output was ",output)
+	output = []
+	OS.execute("ffmpeg",["-i","test.gif","test/frame%04d.png"],output)
+	print("output was ",output)
+	folders_to_pack.push_back("test")
+	# NOTE in the future we won't be able to get away with automatically running the packing and animation stuff here
+	pack_up()
 #### This code is what will do the conversion of pngs into animated tres, and eventually a whole pck file,
 ## will be triggered by the client clicking on a particular project name	
 
 func pack_up() -> void:
 	#
 	var packfile = PCKPacker.new()
-	packfile.pck_start("all_anims.pck")
+	packfile.pck_start("all_anims_test.pck")
 	# need some way to tell what folders that were created should get added to pack
 	for folder in folders_to_pack:
 		var pathPrefix = "res://"+folder
@@ -182,9 +200,9 @@ func pack_up() -> void:
 			i+=1
 			packfile.add_file(pathPrefix+"/"+ele,pathPrefix+"/"+ele)
 		# lastly try to save the resource out 
-		var result = ResourceSaver.save(sframes,"res://animatedFrames.tres")
+		var result = ResourceSaver.save(sframes,"res://animatedFrames_test.tres")
 		
 		if result != OK:
 			print("had a problem saving", result)
-		packfile.add_file("res://animatedFrames.tres","res://animatedFrames.tres")
+		packfile.add_file("res://animatedFrames_test.tres","res://animatedFrames.tres")
 		packfile.flush()
