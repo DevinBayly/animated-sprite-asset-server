@@ -19,4 +19,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.5366042)
 
 [connection signal="makeResources" from="Node2D" to="." method="_on_node_2d_make_resources"]
 [connection signal="responseGrab" from="Node2D" to="." method="_on_node_2d_response_grab"]
+[connection signal="pckReady" from="networking" to="." method="_on_networking_pck_ready"]
 [connection signal="projectNames" from="networking" to="." method="_on_test_client_project_names"]

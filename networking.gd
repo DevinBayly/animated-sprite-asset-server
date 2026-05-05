@@ -1,5 +1,6 @@
 extends Node
 signal projectNames
+signal pckReady
 # By default, these expressions are interchangeable.
 var PORT = 8081
 #var IP_ADDRESS = "godotcommunicator.TRA220030.projects.jetstream-cloud.org"
@@ -32,7 +33,11 @@ func _ready() -> void:
 	multiplayer.connection_failed.connect(con_failed)
 	multiplayer.server_disconnected.connect(server_lost)
 	multiplayer.peer_connected.connect(client_handle_peer_connect)
-	
+	multiplayer.peer_disconnected.connect(client_terminated)
+
+func client_terminated():
+	print("shutting down server, client lost")
+	OS.kill(http_pid)
 func client_handle_peer_connect(id):
 	num_peers+=1
 	
@@ -173,11 +178,12 @@ func offline_test_version():
 	pack_up()
 #### This code is what will do the conversion of pngs into animated tres, and eventually a whole pck file,
 ## will be triggered by the client clicking on a particular project name	
-
+var http_pid 
 func pack_up() -> void:
 	#
+	var pck_name ="all_anims_test.pck"
 	var packfile = PCKPacker.new()
-	packfile.pck_start("all_anims_test.pck")
+	packfile.pck_start(pck_name)
 	# need some way to tell what folders that were created should get added to pack
 	for folder in folders_to_pack:
 		var pathPrefix = "res://"+folder
@@ -193,7 +199,7 @@ func pack_up() -> void:
 		# NOTE that the order of files isn't guaranteed
 		var dirElements = ResourceLoader.list_directory(pathPrefix)
 		var i =0
-		for ele in dirElements:
+		for ele in dirElements.slice(0,10):
 			print("adding frame",ele)
 			var texture = load(pathPrefix+"/"+ele)
 			sframes.add_frame("gifanimation",texture,1.0,i)
@@ -206,3 +212,36 @@ func pack_up() -> void:
 			print("had a problem saving", result)
 		packfile.add_file("res://animatedFrames_test.tres","res://animatedFrames.tres")
 		packfile.flush()
+		# now make an http server just available to provide the file in a non rpc fashion
+		http_pid = OS.create_process("python3",["-m","http.server","58885"])
+		print("notifying the client that the http server is ready ")
+		# now we can post to the client rpc that we have a server ready for requests
+		http_server_ready.rpc(pck_name)
+		print("http server pid is",http_pid)
+		
+@rpc("any_peer","call_remote","reliable",0)
+func http_server_ready(pck_file):
+	if multiplayer.is_server():
+		print("disregard pck_file has been created",pck_file," and server is up")
+	else:
+		# try to use the http_requester to get the pck_file from the server
+		http_requester.request_completed.connect(_on_pck_retrieval)
+		http_requester.request("http://"+IP_ADDRESS+":58885/"+pck_file)
+func _on_pck_retrieval(result, response_code, headers, body):
+	# save 
+	print("request has completed",headers)
+	var file: FileAccess = FileAccess.open("all_anims_test_client.pck", FileAccess.WRITE)
+	file.store_buffer(body)
+	# notify that we can shut down the http server now
+	kill_http_server.rpc()
+	# then emit to display in the interface
+	print("binding might help, USING HARD CODED PCK NAME IN EMIT")
+	pckReady.emit("all_anims_test.pck")
+			
+@rpc("any_peer","call_remote","reliable",0)
+func kill_http_server():
+	if multiplayer.is_server():
+		print("killing http server now")
+		OS.kill(http_pid)
+	else:
+		print("client rpc for killing http server")
