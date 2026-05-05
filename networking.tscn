@@ -4,3 +4,5 @@
 
 [node name="networking" type="Node" unique_id=2089990419]
 script = ExtResource("1_5dl6s")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="." unique_id=797212874]

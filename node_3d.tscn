@@ -1,12 +1,22 @@
 [gd_scene format=3 uid="uid://cte0uh0n613qh"]
 
 [ext_resource type="Script" uid="uid://b1ijirjvi0kfr" path="res://node_3d.gd" id="1_a202f"]
+[ext_resource type="PackedScene" uid="uid://b34k8kmb4qky8" path="res://node_2d.tscn" id="2_noarx"]
+[ext_resource type="PackedScene" uid="uid://bgvggm1g428fs" path="res://networking.tscn" id="3_a0tk4"]
 
-[node name="Node3D" type="Node3D" unique_id=648657205]
+[node name="Root" type="Node3D" unique_id=648657205]
 script = ExtResource("1_a202f")
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="." unique_id=1588058875]
-animation = &"gifanimation"
+animation = &""
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1815265076]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.5366042)
+
+[node name="Node2D" parent="." unique_id=1658810137 instance=ExtResource("2_noarx")]
+
+[node name="networking" parent="." unique_id=2089990419 instance=ExtResource("3_a0tk4")]
+
+[connection signal="makeResources" from="Node2D" to="." method="_on_node_2d_make_resources"]
+[connection signal="responseGrab" from="Node2D" to="." method="_on_node_2d_response_grab"]
+[connection signal="projectNames" from="networking" to="." method="_on_test_client_project_names"]
