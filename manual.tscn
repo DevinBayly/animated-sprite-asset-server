@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://b4fn0w6w255s2"]
+
+[ext_resource type="Script" uid="uid://bufu5ans5c3r8" path="res://manual.gd" id="1_xba3u"]
+
+[node name="manual" type="Node3D" unique_id=598953120]
+script = ExtResource("1_xba3u")
+
+[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="." unique_id=1583480021]
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=266531985]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.4960842)

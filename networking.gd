@@ -205,12 +205,13 @@ func pack_up() -> void:
 			sframes.add_frame("gifanimation",texture,1.0,i)
 			i+=1
 			packfile.add_file(pathPrefix+"/"+ele,pathPrefix+"/"+ele)
+			print(pathPrefix+"/"+ele)
 		# lastly try to save the resource out 
-		var result = ResourceSaver.save(sframes,"res://animatedFrames_test.tres")
+		var result = ResourceSaver.save(sframes,"res://animatedFrames.tres")
 		
 		if result != OK:
 			print("had a problem saving", result)
-		packfile.add_file("res://animatedFrames_test.tres","res://animatedFrames.tres")
+		packfile.add_file("res://animatedFrames_packed.tres","res://animatedFrames.tres")
 		packfile.flush()
 		# now make an http server just available to provide the file in a non rpc fashion
 		http_pid = OS.create_process("python3",["-m","http.server","58885"])
@@ -236,7 +237,7 @@ func _on_pck_retrieval(result, response_code, headers, body):
 	kill_http_server.rpc()
 	# then emit to display in the interface
 	print("binding might help, USING HARD CODED PCK NAME IN EMIT")
-	pckReady.emit("all_anims_test.pck")
+	pckReady.emit("all_anims_test_client.pck")
 			
 @rpc("any_peer","call_remote","reliable",0)
 func kill_http_server():

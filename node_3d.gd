@@ -26,7 +26,7 @@ func _on_node_2d_make_resources(pname) -> void:
 func _on_networking_pck_ready(pckName) -> void:
 	var success = ProjectSettings.load_resource_pack("res://"+pckName)
 	if success:
-		var anim = load("res://animatedFrames.tres")
+		var anim = load("res://animatedFrames_packed.tres")
 		$AnimatedSprite3D.sprite_frames = anim
 		$AnimatedSprite3D.play("gifanimation")
 	pass # Replace with function body.
