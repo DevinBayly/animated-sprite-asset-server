@@ -139,9 +139,10 @@ func make_gifs_request(pname):
 	# NOTE perhaps do some sort of checking to see if the gif has been downloaded and converted already
 	for gifLink in gifs:
 		print("making gif request",gifLink)
-		print("doign a test version, UNCOMMENT LINE BELOW FOR REAL GIF RETRIEVAL")
-		#http_requester.request(gifLink)
-		offline_test_version()
+		
+		http_requester.request(gifLink)
+		#print("doign a test version, UNCOMMENT LINE BELOW FOR REAL GIF RETRIEVAL")
+		#offline_test_version()
 	
 var folders_to_pack=[]
 func _on_gif_retrieval(result, response_code, headers, body):
