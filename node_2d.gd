@@ -6,7 +6,7 @@ var responses_csv_link = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8XG3
 # redirection link 
 signal responseGrab
 signal makeResources
-
+signal playAnimation
 
 func _on_response_grabber_pressed() -> void:
 	responseGrab.emit()
@@ -20,3 +20,12 @@ func make_resource_grabber_button(pnames):
 
 func request_project_assets_packaged_as_resources(pname):
 	makeResources.emit(pname)
+
+func make_anim_player_button():
+	var new_button = Button.new()
+	new_button.text ="Play Packed Animation"
+	Vbox.add_child(new_button)
+	new_button.pressed.connect(emit_anim_play)
+
+func emit_anim_play():
+	playAnimation.emit()
