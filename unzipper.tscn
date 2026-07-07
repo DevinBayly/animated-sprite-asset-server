@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://dteb4botblx1a"]
+
+[ext_resource type="Script" uid="uid://b1culmhdq07h6" path="res://unzipper.gd" id="1_dl6io"]
+
+[node name="unzipper" type="Node" unique_id=202709950]
+script = ExtResource("1_dl6io")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="." unique_id=793094155]
