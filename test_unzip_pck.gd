@@ -32,3 +32,19 @@ func _on_unzipper_pck_made() -> void:
 		print("no, had problem")
 	pass # Replace with function body.
 	pass # Replace with function body.
+
+
+func _on_unzipper_unzip_complete() -> void:
+	var dir= DirAccess.open("user://woman/")
+	var sframes = SpriteFrames.new()
+	var i=0
+	for file in dir.get_files():
+		if file.contains("import"):
+			continue
+		var img = Image.load_from_file("user://woman/"+file)
+		var texture = ImageTexture.create_from_image(img)
+		sframes.add_frame("default",texture,1.0,i)
+		i+=1
+	$Sprite3D.frames = sframes
+	$Sprite3D.play()
+	pass # Replace with function body.

@@ -14,3 +14,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6.8638844)
 [node name="unzipper" parent="." unique_id=202709950 instance=ExtResource("2_1l7fb")]
 
 [connection signal="pck_made" from="unzipper" to="." method="_on_unzipper_pck_made"]
+[connection signal="unzip_complete" from="unzipper" to="." method="_on_unzipper_unzip_complete"]
