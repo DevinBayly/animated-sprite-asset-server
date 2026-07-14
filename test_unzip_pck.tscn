@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://b1w1xrbxjq021"]
+
+[ext_resource type="Script" uid="uid://7yjppb3hj0jh" path="res://test_unzip_pck.gd" id="1_7jao3"]
+[ext_resource type="PackedScene" uid="uid://dteb4botblx1a" path="res://unzipper.tscn" id="2_1l7fb"]
+
+[node name="test_unzip_pck" type="Node3D" unique_id=1207448521]
+script = ExtResource("1_7jao3")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=810953512]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6.8638844)
+
+[node name="Sprite3D" type="AnimatedSprite3D" parent="." unique_id=713764957]
+
+[node name="unzipper" parent="." unique_id=202709950 instance=ExtResource("2_1l7fb")]
+
+[connection signal="pck_made" from="unzipper" to="." method="_on_unzipper_pck_made"]
